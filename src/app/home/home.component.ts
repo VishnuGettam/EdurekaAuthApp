@@ -1,5 +1,7 @@
-import { UserService } from './../services/user.service';
+
 import { Component } from '@angular/core';
+import { AuthenticationService } from '@app/services/authentication.service';
+import { UserService } from '@app/services/user.service';
 import { first } from 'rxjs/operators';
 
 import { User } from '../_models/user';
@@ -8,15 +10,21 @@ import { User } from '../_models/user';
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
     loading = false;
-    users: User[];
+    currentUser: User;
+    userFromApi: User;
 
-    constructor(private userService: UserService) { }
+    constructor(
+        private userService: UserService,
+        private authenticationService: AuthenticationService
+    ) {
+        this.currentUser = this.authenticationService.currentUserValue;
+    }
 
     ngOnInit() {
         this.loading = true;
-        this.userService.getAll().pipe(first()).subscribe(users => {
+        this.userService.getById(this.currentUser.id).pipe(first()).subscribe(user => {
             this.loading = false;
-            this.users = users;
+            this.userFromApi = user;
         });
     }
 }

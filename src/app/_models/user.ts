@@ -1,3 +1,4 @@
+import { Role } from "./Role";
 export class User{
   id:number
   username:string
@@ -5,4 +6,5 @@ export class User{
   firstName:string
   lastName:string
   token?:string
+  role: Role;
 }

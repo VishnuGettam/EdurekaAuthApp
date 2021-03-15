@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
-
-import { User } from './_models/user';
 import { AuthenticationService } from './services/authentication.service';
+import { Role } from './_models/Role';
+import { User } from './_models/user';
+
+
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
@@ -14,6 +15,10 @@ export class AppComponent {
         private authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    }
+
+    get isAdmin() {
+        return this.currentUser && this.currentUser.role === Role.Admin;
     }
 
     logout() {
